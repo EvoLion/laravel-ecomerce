@@ -5,17 +5,17 @@
 @endsection
 
 @section('style')
-    <link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-    <link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-    <link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
-    <link rel="stylesheet" type="text/css" href="styles/product.css">
-    <link rel="stylesheet" type="text/css" href="styles/product_responsive.css">
+    <link rel="stylesheet" type="text/css" href="/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="/styles/product.css">
+    <link rel="stylesheet" type="text/css" href="/styles/product_responsive.css">
 @endsection
 
 @section('content')
     <div class="home">
         <div class="home_container">
-            <div class="home_background" style="background-image:url(images/categories.jpg)"></div>
+            <div class="home_background" style="background-image:url(/images/categories.jpg)"></div>
             <div class="home_content_container">
                 <div class="container">
                     <div class="row">
@@ -40,12 +40,12 @@
                 <!-- Product Image -->
                 <div class="col-lg-6">
                     <div class="details_image">
-                        <div class="details_image_large"><img src="images/details_1.jpg" alt=""><div class="product_extra product_new"><a href="categories.html">New</a></div></div>
+                        <div class="details_image_large"><img src="/images/details_1.jpg" alt=""><div class="product_extra product_new"><a href="categories.html">New</a></div></div>
                         <div class="details_image_thumbnails d-flex flex-row align-items-start justify-content-between">
-                            <div class="details_image_thumbnail active" data-image="images/details_1.jpg"><img src="images/details_1.jpg" alt=""></div>
-                            <div class="details_image_thumbnail" data-image="images/details_2.jpg"><img src="images/details_2.jpg" alt=""></div>
-                            <div class="details_image_thumbnail" data-image="images/details_3.jpg"><img src="images/details_3.jpg" alt=""></div>
-                            <div class="details_image_thumbnail" data-image="images/details_4.jpg"><img src="images/details_4.jpg" alt=""></div>
+                            <div class="details_image_thumbnail active" data-image="/images/details_1.jpg"><img src="/images/details_1.jpg" alt=""></div>
+                            <div class="details_image_thumbnail" data-image="/images/details_2.jpg"><img src="/images/details_2.jpg" alt=""></div>
+                            <div class="details_image_thumbnail" data-image="/images/details_3.jpg"><img src="/images/details_3.jpg" alt=""></div>
+                            <div class="details_image_thumbnail" data-image="/images/details_4.jpg"><img src="/images/details_4.jpg" alt=""></div>
                         </div>
                     </div>
                 </div>
@@ -53,17 +53,29 @@
                 <!-- Product Content -->
                 <div class="col-lg-6">
                     <div class="details_content">
-                        <div class="details_name">Smart Phone</div>
-                        <div class="details_discount">$890</div>
-                        <div class="details_price">$670</div>
+                        <div class="details_name">{{ $product->name }}</div>
+                        @if (is_null($product->sale_price))
+                            <div class="details_price">${{ $product->price }}</div>
+                        @else
+                            @if ($product->price <= $product->sale_price)
+                                <div class="details_price">${{ $product->price }}</div>
+                            @else
+                                <div class="details_discount">${{ $product->price }}</div>
+                                <div class="details_price">${{ $product->sale_price }}</div>
+                            @endif
+                        @endif
 
                         <!-- In Stock -->
                         <div class="in_stock_container">
                             <div class="availability">Availability:</div>
+                            @if ($product->stock > 0)
                             <span>In Stock</span>
+                            @else
+                            <span style="color: red">Out of Stock</span>
+                            @endif
                         </div>
                         <div class="details_text">
-                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Phasellus id nisi quis justo tempus mollis sed et dui. In hac habitasse platea dictumst. Suspendisse ultrices mauris diam. Nullam sed aliquet elit. Mauris consequat nisi ut mauris efficitur lacinia.</p>
+                            <p>{{ $product->description }}</p>
                         </div>
 
                         <!-- Product Quantity -->
@@ -100,7 +112,7 @@
                         <div class="reviews_title"><a href="#">Reviews <span>(1)</span></a></div>
                     </div>
                     <div class="description_text">
-                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Phasellus id nisi quis justo tempus mollis sed et dui. In hac habitasse platea dictumst. Suspendisse ultrices mauris diam. Nullam sed aliquet elit. Mauris consequat nisi ut mauris efficitur lacinia.</p>
+                        <p>{{ $product->description }}</p>
                     </div>
                 </div>
             </div>
@@ -123,7 +135,7 @@
 
                         <!-- Product -->
                         <div class="product">
-                            <div class="product_image"><img src="images/product_1.jpg" alt=""></div>
+                            <div class="product_image"><img src="/images/product_1.jpg" alt=""></div>
                             <div class="product_extra product_new"><a href="categories.html">New</a></div>
                             <div class="product_content">
                                 <div class="product_title"><a href="product.html">Smart Phone</a></div>
@@ -133,7 +145,7 @@
 
                         <!-- Product -->
                         <div class="product">
-                            <div class="product_image"><img src="images/product_2.jpg" alt=""></div>
+                            <div class="product_image"><img src="/images/product_2.jpg" alt=""></div>
                             <div class="product_extra product_sale"><a href="categories.html">Sale</a></div>
                             <div class="product_content">
                                 <div class="product_title"><a href="product.html">Smart Phone</a></div>
@@ -143,7 +155,7 @@
 
                         <!-- Product -->
                         <div class="product">
-                            <div class="product_image"><img src="images/product_3.jpg" alt=""></div>
+                            <div class="product_image"><img src="/images/product_3.jpg" alt=""></div>
                             <div class="product_content">
                                 <div class="product_title"><a href="product.html">Smart Phone</a></div>
                                 <div class="product_price">$710</div>
@@ -152,7 +164,7 @@
 
                         <!-- Product -->
                         <div class="product">
-                            <div class="product_image"><img src="images/product_4.jpg" alt=""></div>
+                            <div class="product_image"><img src="/images/product_4.jpg" alt=""></div>
                             <div class="product_content">
                                 <div class="product_title"><a href="product.html">Smart Phone</a></div>
                                 <div class="product_price">$330</div>
@@ -169,8 +181,8 @@
 @endsection
 
 @section('javascript')
-    <script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
-    <script src="plugins/Isotope/isotope.pkgd.min.js"></script>
-    <script src="plugins/parallax-js-master/parallax.min.js"></script>
-    <script src="js/product.js"></script>
+    <script src="/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="/plugins/Isotope/isotope.pkgd.min.js"></script>
+    <script src="/plugins/parallax-js-master/parallax.min.js"></script>
+    <script src="/js/product.js"></script>
 @endsection

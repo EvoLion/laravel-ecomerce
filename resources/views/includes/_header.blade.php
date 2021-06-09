@@ -10,19 +10,17 @@
                                 <li class="hassubs active">
                                     <a href={{ route('home') }}>Home</a>
                                     <ul>
-                                        <li><a href={{ route('categories') }}>Categories</a></li>
+                                        <li><a href={{ route('categories.index') }}>Categories</a></li>
                                         <li><a href={{ route('cart') }}>Cart</a></li>
                                         <li><a href={{ route('contact') }}>Contact</a></li>
                                     </ul>
                                 </li>
                                 <li class="hassubs">
-                                    <a href={{ route('categories') }}>Categories</a>
+                                    <a href={{ route('categories.index') }}>Categories</a>
                                     <ul>
-                                        <li><a href="categories.html">Category</a></li>
-                                        <li><a href="categories.html">Category</a></li>
-                                        <li><a href="categories.html">Category</a></li>
-                                        <li><a href="categories.html">Category</a></li>
-                                        <li><a href="categories.html">Category</a></li>
+                                        @foreach ($categories as $category)
+                                            <li><a href={{ route('categories.show', ['category' => $category->id])}}>{{ $category->name }}</a></li>
+                                        @endforeach
                                     </ul>
                                 </li>
                                 <li><a href="#">Accessories</a></li>
