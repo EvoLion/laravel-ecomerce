@@ -11,7 +11,7 @@
                                     <a href={{ route('home') }}>Home</a>
                                     <ul>
                                         <li><a href={{ route('categories.index') }}>Categories</a></li>
-                                        <li><a href={{ route('cart') }}>Cart</a></li>
+                                        <li><a href={{ route('cart.index') }}>Cart</a></li>
                                         <li><a href={{ route('contact') }}>Contact</a></li>
                                     </ul>
                                 </li>
@@ -19,7 +19,7 @@
                                     <a href={{ route('categories.index') }}>Categories</a>
                                     <ul>
                                         @foreach ($categories as $category)
-                                            <li><a href={{ route('categories.show', ['category' => $category->id])}}>{{ $category->name }}</a></li>
+                                            <li><a href={{ route('categories.products.index', ['category' => $category->id])}}>{{ $category->name }}</a></li>
                                         @endforeach
                                     </ul>
                                 </li>
@@ -30,7 +30,7 @@
                         </nav>
                         <div class="header_extra ml-auto">
                             <div class="shopping_cart">
-                                <a href={{ route('cart') }}>
+                                <a href={{ route('cart.index') }}>
                                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                              viewBox="0 0 489 489" style="enable-background:new 0 0 489 489;" xml:space="preserve">
                                         <g>
@@ -41,7 +41,8 @@
                                                 c0,7.5,6,13.5,13.5,13.5s13.5-6,13.5-13.5v-41h45.2l26.9,302.3C412.8,445.2,392.1,462,366.8,462z"/>
                                         </g>
                                     </svg>
-                                    <div>Cart <span>(0)</span></div>
+                                    @yield('cart')
+                                    {{-- <div>Cart <span>(0)</span></div> --}}
                                 </a>
                             </div>
                             <div class="search">

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -15,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('categories.index', ['categories' => Category::paginate(12)]);
+        return view('categories.index', ['categories' => Category::all()]);
     }
 
     /**
@@ -45,11 +44,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
-        $category = Category::with('products')->findOrFail($id); // получить пост с комментами
-
-        return view('categories.show', ['category' => $category, 'products' => Product::where('category_id', $id)]);
+        //
     }
 
     /**

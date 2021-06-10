@@ -12,6 +12,12 @@
     <link rel="stylesheet" type="text/css" href="/styles/product_responsive.css">
 @endsection
 
+@section('cart')
+    <div class="cart">
+        @include('includes._cart_counter')
+    </div>
+@endsection
+
 @section('content')
     <div class="home">
         <div class="home_container">
@@ -88,7 +94,8 @@
                                     <div id="quantity_dec_button" class="quantity_dec quantity_control"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>
                                 </div>
                             </div>
-                            <div class="button cart_button"><a href="#">Add to cart</a></div>
+                            <div class="button cart_button"><a href="#" id="{{ $product->id }}" >Add to cart</a></div>
+                            <div class="content"></div>
                         </div>
 
                         <!-- Share -->
@@ -132,45 +139,9 @@
                 <div class="col">
                     
                     <div class="product_grid">
-
-                        <!-- Product -->
-                        <div class="product">
-                            <div class="product_image"><img src="/images/product_1.jpg" alt=""></div>
-                            <div class="product_extra product_new"><a href="categories.html">New</a></div>
-                            <div class="product_content">
-                                <div class="product_title"><a href="product.html">Smart Phone</a></div>
-                                <div class="product_price">$670</div>
-                            </div>
-                        </div>
-
-                        <!-- Product -->
-                        <div class="product">
-                            <div class="product_image"><img src="/images/product_2.jpg" alt=""></div>
-                            <div class="product_extra product_sale"><a href="categories.html">Sale</a></div>
-                            <div class="product_content">
-                                <div class="product_title"><a href="product.html">Smart Phone</a></div>
-                                <div class="product_price">$520</div>
-                            </div>
-                        </div>
-
-                        <!-- Product -->
-                        <div class="product">
-                            <div class="product_image"><img src="/images/product_3.jpg" alt=""></div>
-                            <div class="product_content">
-                                <div class="product_title"><a href="product.html">Smart Phone</a></div>
-                                <div class="product_price">$710</div>
-                            </div>
-                        </div>
-
-                        <!-- Product -->
-                        <div class="product">
-                            <div class="product_image"><img src="/images/product_4.jpg" alt=""></div>
-                            <div class="product_content">
-                                <div class="product_title"><a href="product.html">Smart Phone</a></div>
-                                <div class="product_price">$330</div>
-                            </div>
-                        </div>
-
+                        @foreach ($newest_products_in_category as $product)
+                            @include('includes._card')
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -185,4 +156,32 @@
     <script src="/plugins/Isotope/isotope.pkgd.min.js"></script>
     <script src="/plugins/parallax-js-master/parallax.min.js"></script>
     <script src="/js/product.js"></script>
+
+    <script>
+        let value = null;
+        $( document ).ready(function() {
+            $(".cart_button").on('click', 'a', function () {
+                value = $(this).attr("id");
+                addToCart();
+            });
+        });
+
+        function addToCart() {
+            $.ajax({
+                url: "{{ route('cart.add') }}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'POST',
+                data: { 'id' : value },
+                success: function(data) {
+                    console.log(data);
+                    $('.cart').html(data);
+                },
+                error: function(data){
+                    alert("ERROR - " + data.responseText);
+                }
+            });
+        }
+	</script>
 @endsection

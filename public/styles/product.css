@@ -985,6 +985,23 @@ section
 	color: #6c6a74;
 	margin-top: 12px;
 }
+.product_discount
+{
+	display: inline-block;
+	font-size: 16px;
+	font-weight: 500;
+	color: #e95a5a;
+	margin-right: 20px;
+	text-decoration: line-through;
+}
+.product_price
+{
+	display: inline-block;
+	font-size: 16px;
+	font-weight: 500;
+	color: #6c6a74;
+	margin-top: 12px;
+}
 .details_text
 {
 	margin-top: 49px;

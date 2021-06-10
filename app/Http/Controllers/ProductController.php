@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,11 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $products = Product::where('category_id', $id);
+
+        return view('categories.products.index', ['products' => $products->paginate(12)]);
     }
 
     /**
@@ -46,9 +49,12 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::findOrFail($id); // получить пост с комментами
+        $product = Product::findOrFail($id);
 
-        return view('products.show', ['product' => $product]);
+        $category = Category::with('products')->where('id', $product->category_id)->first();
+        $newest_products_in_category = $category->products()->orderBy('created_at', 'desc')->take(4)->get();
+
+        return view('categories.products.show', ['product' => $product, 'newest_products_in_category' => $newest_products_in_category]);
     }
 
     /**

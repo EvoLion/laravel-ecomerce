@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,14 +17,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
-;
-
-Route::get('/cart', function () {
-    return view('cart');
-})->name('cart');
+// Route::get('/cart', function () {
+//     return view('cart');
+// })->name('cart');
 
 Route::get('/checkout', function () {
     return view('checkout');
@@ -32,5 +29,8 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
-Route::resource('categories', CategoryController::class);
-Route::resource('products', ProductController::class);
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::resource('categories.products', ProductController::class)->shallow();
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');

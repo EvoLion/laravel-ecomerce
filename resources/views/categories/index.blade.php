@@ -31,8 +31,30 @@
     </div>
 </div>
 
-<!-- Products -->
-@include('includes._categories')
+<!-- Categories -->
+<div class="products">
+    <div class="container">
+        <div class="row" style="margin-top: 50px">
+            <div class="col">
+                
+                <div class="product_grid">
+
+                    @foreach ($categories as $category)
+                        <div class="product">
+                            <div class="product_image"><img src="{{ asset('images/' . $category->preview_image) }}" alt=""></div>
+                            <div class="product_content">
+                                <div class="product_title"><a href={{ route('categories.products.index', ['category' => $category->id]) }}>{{ $category->name }}</a></div>
+                            </div>
+                        </div>
+                    @endforeach
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <!-- Icon Boxes -->
