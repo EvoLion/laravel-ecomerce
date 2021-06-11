@@ -9,6 +9,12 @@
     <link rel="stylesheet" type="text/css" href="styles/cart_responsive.css">
 @endsection
 
+@section('cart')
+    <div class="cart">
+        @include('includes._cart_counter')
+    </div>
+@endsection
+
 @section('content')
 <div class="home">
 		<div class="home_container">
@@ -49,45 +55,12 @@
 				</div>
 			</div>
 			<div class="row cart_items_row">
-				<div class="col">
-
-					<!-- Cart Item -->
-					<div class="cart_item d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
-						<!-- Name -->
-						<div class="cart_item_product d-flex flex-row align-items-center justify-content-start">
-							<div class="cart_item_image">
-								<div><img src="images/cart_1.jpg" alt=""></div>
-							</div>
-							<div class="cart_item_name_container">
-								<div class="cart_item_name"><a href="#">Smart Phone Deluxe Edition</a></div>
-								<div class="cart_item_edit"><a href="#">Edit Product</a></div>
-							</div>
-						</div>
-						<!-- Price -->
-						<div class="cart_item_price">$790.90</div>
-						<!-- Quantity -->
-						<div class="cart_item_quantity">
-							<div class="product_quantity_container">
-								<div class="product_quantity clearfix">
-									<span>Qty</span>
-									<input id="quantity_input" type="text" pattern="[0-9]*" value="1">
-									<div class="quantity_buttons">
-										<div id="quantity_inc_button" class="quantity_inc quantity_control"><i class="fa fa-chevron-up" aria-hidden="true"></i></div>
-										<div id="quantity_dec_button" class="quantity_dec quantity_control"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- Total -->
-						<div class="cart_item_total">$790.90</div>
-					</div>
-
-				</div>
+				@include('includes._cart_items')
 			</div>
 			<div class="row row_cart_buttons">
 				<div class="col">
 					<div class="cart_buttons d-flex flex-lg-row flex-column align-items-start justify-content-start">
-						<div class="button continue_shopping_button"><a href="#">Continue shopping</a></div>
+						<div class="button continue_shopping_button"><a href={{ route('categories.index') }}>Continue shopping</a></div>
 						<div class="cart_buttons_right ml-lg-auto">
 							<div class="button clear_cart_button"><a href="#">Clear cart</a></div>
 							<div class="button update_cart_button"><a href="#">Update cart</a></div>
@@ -165,4 +138,46 @@
 @section('javascript')
 	<script src="plugins/parallax-js-master/parallax.min.js"></script>
     <script src="js/cart.js"></script>
+
+
+	<script>
+        $( document ).ready(function() {
+            $(".clear_cart_button").on('click', 'a', function () {
+				clearCart();
+            });
+        });
+
+        function clearCart() {
+            $.ajax({
+                url: "{{ route('cart.clear') }}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'GET',
+                success: function(data) {
+                    $('.cart_items_row').html(data);
+					clearCartCounter();
+                },
+                error: function(data){
+                    alert("ERROR - " + data.responseText);
+                }
+            });
+        }
+
+		function clearCartCounter() {
+            $.ajax({
+                url: "{{ route('cart.clear-counter') }}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'GET',
+                success: function(data) {
+                    $('.cart').html(data);
+                },
+                error: function(data){
+                    alert("ERROR - " + data.responseText);
+                }
+            });
+        }
+	</script>
 @endsection

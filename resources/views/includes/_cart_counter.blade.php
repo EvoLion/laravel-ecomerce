@@ -1,5 +1,5 @@
-@if (session()->has('products'))
-    <div>Cart <span>({{ count(session('products')) }})</span></div>    
+@if (session()->has('cart_counter'))
+Cart <span>({{ session('cart_counter') }})</span>
 @else
-    <div>Cart <span>(0)</span></div>
+Cart <span>(0)</span>
 @endif

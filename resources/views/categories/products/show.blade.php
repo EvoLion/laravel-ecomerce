@@ -158,10 +158,12 @@
     <script src="/js/product.js"></script>
 
     <script>
+        let id = null;
         let value = null;
         $( document ).ready(function() {
             $(".cart_button").on('click', 'a', function () {
-                value = $(this).attr("id");
+                id = $(this).attr("id");
+                value = $('#quantity_input').val();
                 addToCart();
             });
         });
@@ -173,7 +175,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 type: 'POST',
-                data: { 'id' : value },
+                data: { 'id' : id, 'value' : value },
                 success: function(data) {
                     console.log(data);
                     $('.cart').html(data);
