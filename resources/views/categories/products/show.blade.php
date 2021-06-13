@@ -177,7 +177,6 @@
                 type: 'POST',
                 data: { 'id' : id, 'value' : value },
                 success: function(data) {
-                    console.log(data);
                     $('.cart').html(data);
                 },
                 error: function(data){

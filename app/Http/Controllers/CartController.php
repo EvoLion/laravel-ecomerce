@@ -9,7 +9,7 @@ class CartController extends Controller
 {
     public function index()
     {
-        $collection = new \Illuminate\Support\Collection;
+        $collection = collect([]);
         if(session()->has('products')) { 
             $products = session('products');
 
@@ -18,21 +18,27 @@ class CartController extends Controller
     
                 $collection->push(['product_info' => $cart_product, 'count' => $product]);
             }
+        } else {
+            return back();
         }
         
         return view('cart.index', ['cart_products' => $collection->all()]);
+    }
 
-        // $collection = new \Illuminate\Support\Collection;
+    public function editProductValue(Request $request)
+    {
+        $collection = collect([]);
+        $products = session('products');
+        $products[$request->id] = $request->value;
+        session(['products' => $products]); // перезапись сессии
+        
+        foreach ($products as $key => $product) {
+            $cart_product = Product::where('id', $key)->first();
 
-        // if(session()->has('products')) {
-
-        //     foreach (session('products') as $product) {
-        //         $cart_product = Product::where('id', key($product))->first();
-                
-        //         $collection->push(['product_info' => $cart_product, 'count' => current($product)]);
-        //     }
-        //     return view('cart.index', ['cart_products' => $collection->all()]);
-        // }
+            $collection->push(['product_info' => $cart_product, 'count' => $product]);
+            // dd($product);
+        }
+        return view('includes._cart_items', ['cart_products' => $collection->all()])->render();
     }
 
     public function addToCart(Request $request)
@@ -48,39 +54,26 @@ class CartController extends Controller
         }
         session(['products' => $products]); // перезапись сессии
         session()->increment('cart_counter', $request->value);
-
-
-
-        // if (session()->has('products')) {
-        //     foreach ($products as $key => $product) {
-        //         if (array_key_exists($request->id, $product)) {
-        //             session(["products.{$key}" => [$request->id => current($product) + $request->value]]); // рабочий вариант #3
-        //             session()->increment('cart_counter', $request->value);
-        //             return view('includes._cart_counter')->render();
-        //         }
-        //     }
-        // }
-        // session()->push('products', [$request->id => $request->value]);
-        // session()->increment('cart_counter', $request->value);
         
         return view('includes._cart_counter')->render();
     }
 
-    public function clearCart(Request $request)
-    {
-        if(session()->has('products')) {
-            session()->forget('products');
-        }
+    // public function clearCart()
+    // {
+    //     if(session()->has('products')) {
+    //         session()->forget('products');
+    //     }
         
-        return view('includes._cart_items')->render();
-    }
+    //     return redirect()->route('home');
+    // }
 
-    public function clearCartCounter(Request $request)
+    public function clearCart()
     {
-        if(session()->has('cart_counter')) {
-            session()->forget('cart_counter');
-        }
+        session()->forget('products');
+        session()->forget('cart_counter');
+
+        return redirect()->route('home');
         
-        return view('includes._cart_counter')->render();
+        // return view('includes._cart_counter')->render();
     }
 }

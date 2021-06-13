@@ -62,8 +62,8 @@
 					<div class="cart_buttons d-flex flex-lg-row flex-column align-items-start justify-content-start">
 						<div class="button continue_shopping_button"><a href={{ route('categories.index') }}>Continue shopping</a></div>
 						<div class="cart_buttons_right ml-lg-auto">
-							<div class="button clear_cart_button"><a href="#">Clear cart</a></div>
-							<div class="button update_cart_button"><a href="#">Update cart</a></div>
+							<div class="button clear_cart_button"><a href={{ route('cart.clear') }}>Clear cart</a></div>
+							{{-- <div class="button update_cart_button"><a href="#">Update cart</a></div> --}}
 						</div>
 					</div>
 				</div>
@@ -141,22 +141,67 @@
 
 
 	<script>
-        $( document ).ready(function() {
-            $(".clear_cart_button").on('click', 'a', function () {
-				clearCart();
-            });
+
+		let id = null;
+		let value = null;
+		$(".clear_cart_button").on('click', 'a', function () {
+			clearCartCounter();
         });
 
-        function clearCart() {
+        $( document ).ready(function() {
+			initQuantity();
+
+		});
+
+		function initQuantity()
+		{
+			// Handle product quantity input
+			if($('.product_quantity').length)
+			{
+				var originalVal;
+				var endVal;
+
+				$('.quantity_inc').on('click', function()
+				{
+					originalVal = $(this).parent().prev().val();
+					endVal = parseFloat(originalVal) + 1;
+					$(this).parent().prev().val(endVal);
+					
+					id = $(this).parent().attr("id");
+					value = $(this).parent().prev().val();
+					editProductValue();
+				});
+
+				$('.quantity_dec').on('click', function()
+				{
+					originalVal = $(this).parent().prev().val();
+					if(originalVal > 1)
+					{
+						endVal = parseFloat(originalVal) - 1;
+						$(this).parent().prev().val(endVal);
+
+						id = $(this).parent().attr("id");
+						value = $(this).parent().prev().val();
+						editProductValue();
+					}
+				});
+				
+			}
+		}
+
+
+		function editProductValue() {
             $.ajax({
-                url: "{{ route('cart.clear') }}",
+                url: "{{ route('cart.edit-product-value') }}",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                type: 'GET',
+                type: 'POST',
+                data: { 'id' : id, 'value' : value },
                 success: function(data) {
                     $('.cart_items_row').html(data);
-					clearCartCounter();
+
+					initQuantity();
                 },
                 error: function(data){
                     alert("ERROR - " + data.responseText);
@@ -164,20 +209,5 @@
             });
         }
 
-		function clearCartCounter() {
-            $.ajax({
-                url: "{{ route('cart.clear-counter') }}",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                type: 'GET',
-                success: function(data) {
-                    $('.cart').html(data);
-                },
-                error: function(data){
-                    alert("ERROR - " + data.responseText);
-                }
-            });
-        }
 	</script>
 @endsection
