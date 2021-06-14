@@ -153,13 +153,17 @@
 								<div class="order_list_value ml-auto">Total</div>
 							</div>
 							<ul class="order_list">
-								<li class="d-flex flex-row align-items-center justify-content-start">
-									<div class="order_list_title">Cocktail Yellow dress</div>
-									<div class="order_list_value ml-auto">$59.90</div>
-								</li>
+								@if (isset($cart_products))
+									@foreach ($cart_products as $product)
+									<li class="d-flex flex-row align-items-center justify-content-start">
+										<div class="order_list_title">{{ $product['product_info']->name }} × {{ $product['count'] }}</div>
+										<div class="order_list_value ml-auto">${{ $product['product_info']->price * $product['count'] }}</div>
+									</li>
+									@endforeach
+								@endif
 								<li class="d-flex flex-row align-items-center justify-content-start">
 									<div class="order_list_title">Subtotal</div>
-									<div class="order_list_value ml-auto">$59.90</div>
+									<div class="order_list_value ml-auto">${{ $total_price }}</div>
 								</li>
 								<li class="d-flex flex-row align-items-center justify-content-start">
 									<div class="order_list_title">Shipping</div>

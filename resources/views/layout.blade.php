@@ -15,7 +15,7 @@
 <body>
 
     @section('cart')
-        @include('includes._cart_counter')
+        @include('cart.includes._cart_counter')
     @endsection
 
     <main class="super_container">

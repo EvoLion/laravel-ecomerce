@@ -14,7 +14,7 @@
 
 @section('cart')
     <div class="cart">
-        @include('includes._cart_counter')
+        @include('cart.includes._cart_counter')
     </div>
 @endsection
 
@@ -94,7 +94,7 @@
                                     <div id="quantity_dec_button" class="quantity_dec quantity_control"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>
                                 </div>
                             </div>
-                            <div class="button cart_button"><a href="#" id="{{ $product->id }}" >Add to cart</a></div>
+                            <div class="button cart_button"><a id="{{ $product->id }}" >Add to cart</a></div>
                             <div class="content"></div>
                         </div>
 
