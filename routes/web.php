@@ -30,7 +30,7 @@ Route::get('/contact', function () {
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-Route::resource('categories.products', ProductController::class)->shallow();
+Route::resource('categories.products', ProductController::class)->shallow()->only(['index', 'show']);
 
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -40,4 +40,4 @@ Route::get('/refresh-cart-counter', [CartController::class, 'refreshCartCounter'
 Route::post('/edit-product-value', [CartController::class, 'editProductValue'])->name('cart.edit-product-value');
 
 Route::get('/checkout', [OrderController::class, 'index'])->name('checkout');
-Route::get('/create-order', [OrderController::class, 'create'])->name('create-order');
+Route::post('/create-order', [OrderController::class, 'create'])->name('create-order');

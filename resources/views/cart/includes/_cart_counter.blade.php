@@ -1,14 +1,4 @@
-@php
-    if(session()->has('cart_counter')) {
-        $href = route('cart.index');
-        $counter = session('cart_counter');
-    } else {
-        $href = "";
-        $counter = "0";
-    }
-@endphp 
-
-<a href="{{ $href }}" style="cursor: pointer">
+<a href="{{ session()->has('cart_counter') ? route('cart.index') : "" }}" style="cursor: pointer">
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             viewBox="0 0 489 489" style="enable-background:new 0 0 489 489;" xml:space="preserve">
         <g>
@@ -19,5 +9,5 @@
                 c0,7.5,6,13.5,13.5,13.5s13.5-6,13.5-13.5v-41h45.2l26.9,302.3C412.8,445.2,392.1,462,366.8,462z"/>
         </g>
     </svg>
-    <div>Cart <span>({{ $counter }})</span></div>
+    <div>Cart <span>({{ session('cart_counter') ?? "0" }})</span></div>
 </a>

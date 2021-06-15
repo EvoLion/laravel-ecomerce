@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\ShipMethod;
 use Illuminate\Http\Request;
@@ -32,14 +33,28 @@ class CartController extends Controller
     {
         $collection = collect([]);
         $total_price = null;
+        $method = null;
+        $coupon = null;
         
         $products = session('products');
         $cart_counter = session('cart_counter');
 
-        $old_product_value = $products[$request->id];
-        $products[$request->id] = $request->value;
-        session(['products' => $products]); // перезапись сессии
-        session(['cart_counter' => $cart_counter + ($request->value - $old_product_value)]);
+        if(isset($request->id)) {
+            $old_product_value = $products[$request->id];
+            $products[$request->id] = $request->value;
+            session(['products' => $products]); // перезапись сессии
+            session(['cart_counter' => $cart_counter + ($request->value - $old_product_value)]);
+        }
+
+        if(isset($request->ship_id)) {
+            $method = ShipMethod::where('id', $request->ship_id)->first();
+            session(['ship_method' => $method]);
+        }
+
+        if(isset($request->coupon)) {
+            $coupon = Coupon::where('code', $request->coupon)->first();
+            session(['coupon' => $coupon]);
+        }
         
         foreach ($products as $key => $product) {
             $cart_product = Product::where('id', $key)->first();
@@ -48,7 +63,7 @@ class CartController extends Controller
             $collection->push(['product_info' => $cart_product, 'count' => $product]);
             // dd($product);
         }
-        return view('cart.includes._cart_items', ['cart_products' => $collection->all(), 'total_price' => $total_price])->render();
+        return view('cart.includes._cart_items', ['cart_products' => $collection->all(), 'total_price' => $total_price, 'ship_methods' => ShipMethod::all(), 'select_ship_method' => $method, 'coupon' => $coupon])->render();
     }
 
     public function addToCart(Request $request)

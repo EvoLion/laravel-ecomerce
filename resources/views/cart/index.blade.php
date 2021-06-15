@@ -26,8 +26,8 @@
 							<div class="home_content">
 								<div class="breadcrumbs">
 									<ul>
-										<li><a href="index.html">Home</a></li>
-										<li><a href="categories.html">Categories</a></li>
+										<li><a href="{{ route('home') }}">Home</a></li>
+										<li><a href="{{ route('categories') }}">Categories</a></li>
 										<li>Shopping Cart</li>
 									</ul>
 								</div>
@@ -55,8 +55,10 @@
 
 	<script>
 
-		let id;
-		let value;
+		let id = null;
+		let value = null;
+		let ship_id = null;
+		let coupon = null;
 
         $( document ).ready(function() {
 			initQuantity();
@@ -94,6 +96,22 @@
 						editProductValue();
 					}
 				});
+
+				$(".delivery_option").on('click', 'input', function () {
+					ship_id = $(this).attr("id");
+					editProductValue();
+				});
+
+				$('form').submit(function(e) { 
+					let form = $(this).serializeArray();
+					console.log(form[0].value);
+
+					coupon = $.trim(form[0].value)
+					editProductValue();
+					e.preventDefault(); 
+				});
+
+				console.log(id, value, ship_id, coupon);
 			}
 		}
 
@@ -105,7 +123,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 type: 'POST',
-                data: { 'id' : id, 'value' : value },
+                data: { 'id' : id, 'value' : value, 'ship_id' : ship_id, 'coupon' : coupon },
                 success: function(data) {
                     $('.cart_container').html(data);
 					initQuantity();
