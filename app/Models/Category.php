@@ -9,11 +9,6 @@ class Category extends Model
 {
     use HasFactory;
 
-    public function getProductsById($id)
-    {
-        return Category::where('id', $id);
-    }
-
     public function products()
     {
         return $this->hasMany(Product::class);
